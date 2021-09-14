@@ -1,0 +1,16 @@
+name: LUDe
+channels:
+- rdkit
+- conda-forge
+- defaults
+dependencies:
+    - libgcc=5.2.0
+    - rdkit
+    - pip
+    - pip:
+        - pandas==1.0.1
+        - numpy==1.18.1
+        - xgboost==1.0.2
+        - molvs
+        - streamlit==0.82.0
+        - streamlit_tags
