@@ -70,7 +70,7 @@ st.sidebar.header('Upload your smiles')
 uploaded_file_1 = st.sidebar.file_uploader("Upload your smiles in a TXT file", type=["txt"])
 
 st.sidebar.markdown("""
-[Example TXT input file](https://raw.githubusercontent.com/cbellera/LUDe_v1/main/diclofenac_example.txt)
+[Example TXT input file](https://raw.githubusercontent.com/cbellera/LISTo_v1/main/diclofenac_example.txt)
 """)
 
 
