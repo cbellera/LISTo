@@ -35,9 +35,9 @@ st.markdown(":computer:""**Web Site** " "<https://lideb.biol.unlp.edu.ar>")
 st.write("""
 # LIDeB Tools - LISTo
 
-LIDeB's Standardization Tool is a WebApp to standardize SMILES based in MOLVS.
+LIDeB's Standardization Tool is a WebApp to standardize SMILES based in MolVS.
 
-The tool uses the following packages: [RDKIT](https://www.rdkit.org/docs/index.html),  [MOLVS](https://molvs.readthedocs.io/)
+The tool uses the following packages: [RDKIT](https://www.rdkit.org/docs/index.html),  [MolVS](https://molvs.readthedocs.io/)
 
 Default setting will perform next actions to each smiles:
 
@@ -46,11 +46,11 @@ Default setting will perform next actions to each smiles:
 - disconnect metal atoms that are defined as covalently bonded to non-metals by MetalDisconnector (RDKIT)
 - correct functional groups and recombining charges by Normalizer (RDKIT)
 - fix charges and reionize a molecule by Reionizer (RDKIT)
-- select the largest covalent fragment by fragment_parent (molvs)
-- remove stereochemistry by stereo_parent (molvs)
-- select the more stable tautomeric form by tautomer_parent (molvs)
-- remove charges - neutralization - by charge_parent (molvs)
-- select the most abundant isotope by isotope_parent (molvs)
+- select the largest covalent fragment by fragment_parent (MolVS)
+- remove stereochemistry by stereo_parent (MolVS)
+- select the more stable tautomeric form by tautomer_parent (MolVS)
+- remove charges - neutralization - by charge_parent (MolVS)
+- select the most abundant isotope by isotope_parent (MolVS)
 
 """)
 
