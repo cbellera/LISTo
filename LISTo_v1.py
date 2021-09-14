@@ -7,6 +7,8 @@ from molvs import Standardizer
 from rdkit import Chem
 import streamlit as st
 import base64
+import mols2grid
+import streamlit.components.v1 as components
 
 #---------------------------------#
 # Page layout
@@ -37,7 +39,7 @@ st.write("""
 
 LIDeB's Standardization Tool is a WebApp to standardize SMILES based in MolVS.
 
-The tool uses the following packages: [RDKIT](https://www.rdkit.org/docs/index.html),  [MolVS](https://molvs.readthedocs.io/)
+The tool uses the following packages: [RDKIT](https://www.rdkit.org/docs/index.html),  [MolVS](https://molvs.readthedocs.io/), [mols2grid](https://github.com/cbouy/mols2grid)
 
 Default setting will perform next actions to each smiles:
 
@@ -109,6 +111,7 @@ If you are looking to contact us, please
 [:e-mail:](mailto:lideb@biol.unlp.edu.ar) or [Twitter](https://twitter.com/LIDeB_UNLP)
 """)
 
+
 ####---------------------------------------------------------------------------####
 #### Standarization by MOLVS ####
 
@@ -117,10 +120,10 @@ import pandas as pd
 def LISTo(uploaded_file_1):   
     data = pd.read_csv(uploaded_file_1,sep="\t",header=None,index_col=None)
     molecules = list(data[0])
-    standarized_smiles_list = []
     log_validation = []
     t = st.empty()
-
+    dataframe_smile_validation = pd.DataFrame()
+    
     for i, line in enumerate(molecules,start = 1):
         smiles = line.strip()
         mol = Chem.MolFromSmiles(smiles)
@@ -128,7 +131,7 @@ def LISTo(uploaded_file_1):
         # To log the problems in SMILES
         result = validate_smiles(smiles)
         if result == []:
-            log_validation.append(f"SMILES {i}: standardized!" )
+            log_validation.append(f"SMILES {i}: Correct!" )
         else:
             log_validation.append(f"SMILES {i}: {result}" )
 
@@ -158,14 +161,16 @@ def LISTo(uploaded_file_1):
                     standarized_mol = Chem.rdmolops.RemoveHs(standarized_mol)
                     
             smile_standar = Chem.MolToSmiles(standarized_mol)
-            standarized_smiles_list.append(smile_standar)
+            
+            dict_line= {'Name' : f"Molecule_{i}" , 'smiles_col' : smile_standar}
+            dataframe_smile_validation = dataframe_smile_validation.append(dict_line, ignore_index=True)
         except:
             st.write(f'Molecule {i} could not be standardized')
-        t.markdown("Progress: Molecule " + str(i) +"/" + str(len(molecules)))   
-
-    standarized_smiles_final = pd.DataFrame(standarized_smiles_list)
-    log_validation_final = pd.DataFrame(log_validation)
-    return standarized_smiles_final, log_validation_final
+        t.markdown("Progress: Molecule " + str(i) +"/" + str(len(molecules)))
+    validation_log = pd.DataFrame(log_validation)
+    log_without_none = [i for j,i in enumerate(log_validation,start = 1) if i != f"SMILES {j}: ['ERROR: [IsNoneValidation] Molecule is None']"]
+    dataframe_smile_validation['Log_validation'] = log_without_none
+    return  dataframe_smile_validation, validation_log
 
 # To export files
 
@@ -186,20 +191,50 @@ if uploaded_file_1 is not None:
     run = st.button("Standardize")
     if run == True:
         st.markdown("**Standardizing...**")
-        standarized_smiles_final, log_validation_final = LISTo(uploaded_file_1)
+        dataframe_smile_validation, validation_log = LISTo(uploaded_file_1)
         
         st.markdown(":point_down: **Here you can dowload the standarized SMILES**", unsafe_allow_html=True)
-        st.markdown(filedownload(standarized_smiles_final), unsafe_allow_html=True)
+        st.markdown(filedownload(dataframe_smile_validation['smiles_col']), unsafe_allow_html=True)
         
         st.markdown(":point_down: **Here you can dowload the log**", unsafe_allow_html=True)
-        st.markdown(filedownload1(log_validation_final), unsafe_allow_html=True)
+        st.markdown(filedownload1(validation_log), unsafe_allow_html=True)
+        
+        st.markdown("# Visualization of standardized molecules", unsafe_allow_html=True)
+        
+        mg = mols2grid.MolGrid(dataframe_smile_validation, smiles_col = 'smiles_col', 
+                               useSVG=True, size=(180, 150), use_coords=True)
+        raw_html = mg.display(subset = ['Name','img'], tooltip = ['Name', 'smiles_col','Log_validation'],
+                              tooltip_trigger="click hover")._repr_html_()
+        components.html(raw_html, width=1500, height=1500, scrolling=True)
+        
 else:
-    st.markdown("""
-         ** :point_left: Please upload your SMILES on the left **
-         """)
+    if st.button('Press to use Example SMILES'):
+        st.markdown("**Standardizing...**")
+        # uploaded_file_1 = pd.read_csv("diclofenac_example.txt",sep="\t",header=None)
+        
+        # st.write(uploaded_file_1)
+        dataframe_smile_validation, validation_log = LISTo("diclofenac_example.txt")
+        st.markdown(":point_down: **Here you can dowload the standarized SMILES**", unsafe_allow_html=True)
+        st.markdown(filedownload(dataframe_smile_validation['smiles_col']), unsafe_allow_html=True)
+        
+        st.markdown(":point_down: **Here you can dowload the log**", unsafe_allow_html=True)
+        st.markdown(filedownload1(validation_log), unsafe_allow_html=True)
+        
+        st.markdown("# Visualization of standardized molecules", unsafe_allow_html=True)
+        
+        mg = mols2grid.MolGrid(dataframe_smile_validation, smiles_col = 'smiles_col', 
+                               useSVG=True, size=(180, 150), use_coords=True)
+        raw_html = mg.display(subset = ['Name','img'], tooltip = ['Name', 'smiles_col','Log_validation'],
+                              tooltip_trigger="click hover")._repr_html_()
+        components.html(raw_html, width=1500, height=1500, scrolling=True)
 
-    st.info('Awaiting for TXT file to be uploaded.')
-
+        
+    else:
+        st.markdown("""
+             ** :point_left: Please upload your smiles on the left **
+             """)
+    
+        st.info('Awaiting for TXT file to be uploaded.')
 
 #Footer edit
 
