@@ -65,9 +65,9 @@ text = '''
 
 #---------------------------------#
 # Sidebar - Collects user input features into dataframe
-st.sidebar.header('Upload your smiles')
+st.sidebar.header('Upload your SMILES')
 
-uploaded_file_1 = st.sidebar.file_uploader("Upload your smiles in a TXT file", type=["txt"])
+uploaded_file_1 = st.sidebar.file_uploader("Upload your SMILES in a TXT file", type=["txt"])
 
 st.sidebar.markdown("""
 [Example TXT input file](https://raw.githubusercontent.com/cbellera/LISTo/main/diclofenac_example.txt)
@@ -195,7 +195,7 @@ if uploaded_file_1 is not None:
         st.markdown(filedownload1(log_validation_final), unsafe_allow_html=True)
 else:
     st.markdown("""
-         ** :point_left: Please upload your smiles on the left **
+         ** :point_left: Please upload your SMILES on the left **
          """)
 
     st.info('Awaiting for TXT file to be uploaded.')
