@@ -14,3 +14,4 @@ dependencies:
         - molvs
         - streamlit==0.82.0
         - streamlit_tags
+        - mols2grid
