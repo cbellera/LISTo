@@ -2,3 +2,4 @@ streamlit==0.82.0
 streamlit_tags
 rdkit==2020.09.1.0
 molvs
+mols2grid
