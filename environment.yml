@@ -1,4 +1,4 @@
-name: LUDe
+name: LISTo
 channels:
 - rdkit
 - conda-forge
