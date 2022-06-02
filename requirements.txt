@@ -3,3 +3,4 @@ streamlit_tags
 rdkit==2020.09.1.0
 molvs
 mols2grid
+protobuf~=3.19.0
