@@ -15,3 +15,4 @@ dependencies:
         - streamlit==0.82.0
         - streamlit_tags
         - mols2grid
+        - protobuf~=3.19.0
