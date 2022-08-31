@@ -12,7 +12,7 @@ dependencies:
         - numpy==1.18.1
         - xgboost==1.0.2
         - molvs
-        - streamlit==0.82.0
+        - streamlit==1.9.2
         - streamlit_tags
         - mols2grid
         - protobuf~=3.19.0
