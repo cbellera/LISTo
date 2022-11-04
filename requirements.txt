@@ -1,0 +1,7 @@
+streamlit
+rdkit-pypi
+mols2grid
+molvs
+click==7.1.2
+xgboost==1.0.2
+protobuf~=3.19.0
