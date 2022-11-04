@@ -1,5 +1,4 @@
 streamlit
-libxrender1
 rdkit-pypi
 mols2grid
 molvs
