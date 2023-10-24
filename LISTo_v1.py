@@ -126,7 +126,9 @@ def LISTo(uploaded_file_1):
     
     for i, line in enumerate(molecules,start = 1):
         smiles = line.strip()
+        st.write(smiles)
         mol = Chem.MolFromSmiles(smiles)
+        st.write(mol)
         s = Standardizer()
         # To log the problems in SMILES
         result = validate_smiles(smiles)
