@@ -126,9 +126,7 @@ def LISTo(uploaded_file_1):
     
     for i, line in enumerate(molecules,start = 1):
         smiles = line.strip()
-        st.write(smiles)
         mol = Chem.MolFromSmiles(smiles)
-        st.write(mol)
         s = Standardizer()
         # To log the problems in SMILES
         result = validate_smiles(smiles)
@@ -161,9 +159,9 @@ def LISTo(uploaded_file_1):
                     standarized_mol = Chem.rdmolops.AddHs(standarized_mol)
                 else:
                     standarized_mol = Chem.rdmolops.RemoveHs(standarized_mol)
-                    
+                
             smile_standar = Chem.MolToSmiles(standarized_mol)
-            
+            st.write(smile_standar)
             dict_line= {'Name' : f"Molecule_{i}" , 'smiles_col' : smile_standar}
             dataframe_smile_validation = dataframe_smile_validation.append(dict_line, ignore_index=True)
         except:
