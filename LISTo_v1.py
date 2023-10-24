@@ -162,8 +162,9 @@ def LISTo(uploaded_file_1):
                 
             smile_standar = Chem.MolToSmiles(standarized_mol)
             dict_line= {'Name' : f"Molecule_{i}" , 'smiles_col' : smile_standar}
-            st.write(smile_standar)
-            dataframe_smile_validation = dataframe_smile_validation.append(dict_line, ignore_index=True)
+            #dataframe_smile_validation = dataframe_smile_validation.append(dict_line, ignore_index=True)
+            dataframe_smile_validation = pd.concat([dataframe_smile_validation, dict_line], ignore_index=True)
+
         except:
             st.write(f'Molecule {i} could not be standardized')
         t.markdown("Progress: Molecule " + str(i) +"/" + str(len(molecules)))
